@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
+: "${DRY_RUN:=0}"
+
 flake_path=$(realpath "${1:-$(pwd)}")
 flake_dirname=$(basename "$flake_path")
 
@@ -16,5 +18,9 @@ readarray -t flake_drvs < <(
 
 for store_path in "${flake_drvs[@]}"; do
 	drv_name=$(basename "$store_path")
-	nix-store --add-root "/tmp/$drv_name" --realise "$store_path"
+	if [ "$DRY_RUN" -eq 1 ]; then
+		echo "/tmp/$drv_name"
+	else
+		nix-store --add-root "/tmp/$drv_name" --realise "$store_path"
+	fi
 done
