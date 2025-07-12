@@ -1,0 +1,17 @@
+name: Add GC roots for all flake outputs
+description: |
+  Collect the paths of every flake output's derivation and create a root to
+  exempt it from garbage collection for this specific job run.
+
+inputs:
+  flake-path:
+    description: The path of the flake to create GC roots for.
+    required: true
+    default: ${{ github.workspace }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Add GC roots
+      run: ${{ github.action_path }}/add-gc-roots.sh '${{ inputs.flake-path }}'
+      shell: bash
