@@ -1,4 +1,5 @@
 name: Add GC roots for all flake outputs
+author: Jacob Birkett
 description: |
   Collect the paths of every flake output's derivation and create a root to
   exempt it from garbage collection for this specific job run.
